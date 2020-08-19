@@ -5,14 +5,48 @@
     <title>Jax</title>
 </head>
 <body>
+    <div id="test1"></div>
+    <div id="test2"></div>
     <script type="text/javascript" src="../js/react.development.js"></script>
     <script type="text/javascript" src="../js/react-dom.development.js"></script>
     <script type="text/javascript" src="../js/babel.min.js"></script>
+    <!--基于 text/javascript -->
     <script type="text/javascript">
-        const msg = "Hello";
-        //1. 创建虚拟 DOM
-        let virtualDom = React.createElement("h1", {id:msg.toUpperCase()}, '');
+        const msg1 = "Hello";
+        const msg2 = "World";
+
+        const containerDom = document.getElementById("test1");
+        //1. 创建虚拟 DOM (纯 js 方式)
+        const virtualDom1 = React.createElement("h2", {id:msg1.toUpperCase()}, msg1.toLowerCase());
+        debugger
+
+        //2. 渲染 DOM
+        ReactDOM.render(virtualDom1, document.getElementById("test1"));
 
     </script>
+    <!--基于 text/babel -->
+    <script type="text/babel">
+        //1. 创建虚拟 DOM  {属性名} 输出属性值
+        const virtualDom2 = <h3 id={msg2.toUpperCase()}>{msg2.toLowerCase()}</h3>;
+        //2. 渲染 DOM，虚拟 -> 真实DOM
+        ReactDOM.render(virtualDom2, document.getElementById("test2"));
+    </script>
 </body>
-</html>
+<!--
+    一、为什么会有虚拟 DOM?
+    1. 轻，真实DOM太重 2. render的时候才更新页面，而不是操作一次更新一次
+
+    二、什么是JAX?
+    1. JavaScript + XML, html标签是固定的，但 XML 可以自定义标签、属性，然后由 babel 解析为 js
+
+    三、语法规则
+    '<' 开头，标签语法解析，html标签同名转换为 html 标签，其他标签特殊解析
+    '{' 开头，js语法解析，代码必须 {} 包含
+
+    四、渲染
+    将 虚拟DOM 渲染到 容器DOM
+    ReactDOM.render(virtualDOM, containerDOM);
+
+    测试语法，先运行，后编译，速度慢
+    真正运行项目，先编译，后运行
+-->
